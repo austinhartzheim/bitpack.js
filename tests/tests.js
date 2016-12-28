@@ -57,6 +57,13 @@ describe('BitPack.or()', () => {
         expect(bpAllZeros1.or(bpAllZeros2)).toBe(false);
         expect(bpAllZeros2.or(bpAllZeros1)).toBe(false);
     });
+
+    it('should return true when the packs contain a 1 bit by offset', () => {
+        var bp1 = new BitPack('\x00\x00\x01\x00');
+        var bp2 = new BitPack('\x00\x00');
+
+        expect(bp1.or(bp2, 1)).toBe(true);
+    });
     
     it('should return true when comparing with an empty pack', () => {
         var bp = new BitPack('\x00\x01\x02');
@@ -105,6 +112,13 @@ describe('BitPack.and()', () => {
 
         expect(bp1.and(bp2)).toBe(false);
         expect(bp2.and(bp1)).toBe(false);
+    });
+
+    it('should return true when the packs match by index offset', () => {
+        var bp1 = new BitPack('\x00\x01\x02\x03');
+        var bp2 = new BitPack('\x01\x02\x03');
+
+        expect(bp1.and(bp2, 1)).toBe(true);
     });
 
     it('should return true when comparing with an empty pack', () => {
