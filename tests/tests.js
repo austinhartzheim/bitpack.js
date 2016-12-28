@@ -83,3 +83,52 @@ describe('BitPack.or()', () => {
         expect(bp1.or(bp3, 1)).toBe(false);
     });
 });
+
+describe('BitPack.and()', () => {
+    it('should return true with both packs are bitwise idential', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var bp2 = new BitPack('\x00\x01\x02');
+
+        expect(bp1.and(bp2)).toBe(true);
+        expect(bp2.and(bp1)).toBe(true);
+    });
+
+    it('should return false when any bit is different', () => {
+        var bp1 = new BitPack('\x00\x00');
+        var bp2 = new BitPack('\x00\x01');
+
+        expect(bp1.and(bp2)).toBe(false);
+        expect(bp2.and(bp1)).toBe(false);
+
+        bp1 = new BitPack('\xff\xff\x00\xff');
+        bp2 = new BitPack('\xff\xff\xff\xff');
+
+        expect(bp1.and(bp2)).toBe(false);
+        expect(bp2.and(bp1)).toBe(false);
+    });
+
+    it('should return true when comparing with an empty pack', () => {
+        var bp = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(bp.and(emptyPack)).toBe(true);
+        expect(bp.and(emptyPack, 1)).toBe(true);
+    });
+
+    it('should return false when the source is empty', () => {
+        var bp = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(emptyPack.and(bp)).toBe(false);
+        expect(emptyPack.and(bp, 1)).toBe(false);
+    });
+
+    it('should return false if an or reads past the data boundary', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var bp2 = new BitPack('\x00\x01\x02\x04');
+        var bp3 = new BitPack('\\x01\x02\x03');
+
+        expect(bp1.and(bp2)).toBe(false);
+        expect(bp1.and(bp3, 1)).toBe(false);
+    });
+});
