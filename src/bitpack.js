@@ -1,9 +1,11 @@
 function BitPack(data) {
-    this.data = data;
+    this.data = data || "";
 }
 
 BitPack.prototype.byteAt = function(index) {
-    return this.data.charAt(index) & 0xff;
+    if (index >= this.len())
+        throw new RangeError();
+    return this.data.charCodeAt(index) & 0xff;
 };
 
 BitPack.prototype.len = function() {
