@@ -182,10 +182,12 @@ describe('BitMask.slice()', () => {
 
         var slice1 = bp.slice(1, 3);
         expect(slice1.constructor).toBe(BitPack);
+        expect(slice1.len()).toBe(2);
         expect(bp.and(slice1, 1)).toBe(true);
 
         var slice2 = bp.slice(1);
         expect(slice2.constructor).toBe(BitPack);
+        expect(slice2.len()).toBe(3);
         expect(bp.and(slice2, 1)).toBe(true);
     });
 });
