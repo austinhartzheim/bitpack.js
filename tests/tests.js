@@ -146,3 +146,32 @@ describe('BitPack.and()', () => {
         expect(bp1.and(bp3, 1)).toBe(false);
     });
 });
+
+describe('BitMask.bitAt()', () => {
+    it('should return a boolean representation of the index bit', () => {
+        var bp = new BitPack('\x00\xf0');
+
+        expect(bp.bitAt(0)).toBe(false);
+        expect(bp.bitAt(0, 0)).toBe(false);
+
+        expect(bp.bitAt(8)).toBe(true);
+        expect(bp.bitAt(1, 0)).toBe(true);
+
+        expect(bp.bitAt(12)).toBe(false);
+        expect(bp.bitAt(1, 4)).toBe(false);
+    });
+
+    it('should throw a RangeError if index is beyond the data range', () => {
+        var bp = new BitPack('\x00\xff');
+
+        var readBitPastDataRange = () => {
+            bp.bitAt(16);
+        };
+        var readByteBitPastDataRange = () => {
+            bp.bitAt(2, 0);
+        };
+
+        expect(readBitPastDataRange).toThrowError(RangeError);
+        expect(readByteBitPastDataRange).toThrowError(RangeError);
+    });
+});

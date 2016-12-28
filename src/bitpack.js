@@ -8,6 +8,19 @@ BitPack.prototype.byteAt = function(index) {
     return this.data.charCodeAt(index) & 0xff;
 };
 
+BitPack.prototype.bitAt = function(index, bitIndex) {
+    if (bitIndex == undefined) {
+        bitIndex = index % 8;
+        index = Math.floor(index / 8);
+    }
+
+    if (this.byteAt(index) & (0x80 >> bitIndex)) {
+        return true;
+    }
+
+    return false;
+};
+
 BitPack.prototype.len = function() {
     return this.data.length;
 };
