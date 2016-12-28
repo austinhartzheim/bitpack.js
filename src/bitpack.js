@@ -14,6 +14,18 @@ BitPack.prototype.len = function() {
 
 BitPack.prototype.or = function(pack, index) {
     index = index | 0;
+
+    // oring with an empty pack should always return true.
+    if (pack.len() == 0) {
+        return true;
+    }
+
+    // if this check reads past the end of our data, return false
+    if (index + pack.len() > this.len()) {
+        return false;
+    }
+
+    
     for (var i = 0; i < pack.len(); i++) {
         if (this.byteAt(index + i) | pack.byteAt(i)) {
             return true;

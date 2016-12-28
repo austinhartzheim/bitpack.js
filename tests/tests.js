@@ -40,3 +40,46 @@ describe('BitPack.byteAt()', () => {
         expect(readPastDataBounds).toThrowError(RangeError);
     });
 });
+
+describe('BitPack.or()', () => {
+    it('should return true when either pack contains a 1 bit', () => {
+        var bpAllZeros = new BitPack('\x00\x00\x00');
+        var bp1 = new BitPack('\x00\x01\x02');
+
+        expect(bpAllZeros.or(bp1)).toBe(true);
+        expect(bp1.or(bpAllZeros)).toBe(true);
+    });
+
+    it('should return false when both packs contain only zero bits', () => {
+        var bpAllZeros1 = new BitPack('\x00\x00\x00');
+        var bpAllZeros2 = new BitPack('\x00\x00\x00');
+
+        expect(bpAllZeros1.or(bpAllZeros2)).toBe(false);
+        expect(bpAllZeros2.or(bpAllZeros1)).toBe(false);
+    });
+    
+    it('should return true when comparing with an empty pack', () => {
+        var bp = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(bp.or(emptyPack)).toBe(true);
+        expect(bp.or(emptyPack, 1)).toBe(true);
+    });
+
+    it('should return false when the source is empty', () => {
+        var bp = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(emptyPack.or(bp)).toBe(false);
+        expect(emptyPack.or(bp, 1)).toBe(false);
+    });
+
+    it('should return false if an or reads past the data boundary', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var bp2 = new BitPack('\x00\x01\x02\x04');
+        var bp3 = new BitPack('\x00\x01\x02');
+
+        expect(bp1.or(bp2)).toBe(false);
+        expect(bp1.or(bp3, 1)).toBe(false);
+    });
+});
