@@ -175,3 +175,17 @@ describe('BitMask.bitAt()', () => {
         expect(readByteBitPastDataRange).toThrowError(RangeError);
     });
 });
+
+describe('BitMask.slice()', () => {
+    it('should return a BitPack with the sliced data', () => {
+        var bp = new BitPack('\x00\x01\x02\x03');
+
+        var slice1 = bp.slice(1, 3);
+        expect(slice1.constructor).toBe(BitPack);
+        expect(bp.and(slice1, 1)).toBe(true);
+
+        var slice2 = bp.slice(1);
+        expect(slice2.constructor).toBe(BitPack);
+        expect(bp.and(slice2, 1)).toBe(true);
+    });
+});

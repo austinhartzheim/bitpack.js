@@ -67,3 +67,7 @@ BitPack.prototype.and = function(pack, index) {
     }
     return true;
 };
+
+BitPack.prototype.slice = function(start, end) {
+    return new BitPack(this.data.slice(start, end));
+};
