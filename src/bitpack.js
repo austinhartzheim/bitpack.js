@@ -25,6 +25,24 @@ BitPack.prototype.len = function() {
     return this.data.length;
 };
 
+BitPack.prototype.or = function(pack, index) {
+    index = index | 0;
+
+    // if this reads past the end of our data, throw a range error
+    if (pack.len() > index + this.len()) {
+        throw new RangeError();
+    }
+
+    var resultData = '';
+    for (var i = 0; i < pack.len(); i++) {
+        resultData += String.fromCharCode(
+            this.byteAt(index + i) | pack.byteAt(i)
+        );
+    }
+
+    return new BitPack(resultData);
+};
+
 BitPack.prototype.boolOr = function(pack, index) {
     index = index | 0;
 

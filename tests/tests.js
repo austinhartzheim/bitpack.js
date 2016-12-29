@@ -41,6 +41,55 @@ describe('BitPack.byteAt()', () => {
     });
 });
 
+describe('BitPack.or()', () => {
+    it('should return the or of the two bitpacks', () => {
+        var bp1 = new BitPack('\x00\xff\xab');
+        var bp2 = new BitPack('\x01\x00\xb5');
+
+        var res = bp1.or(bp2);
+        expect(bp2.constructor).toBe(BitPack);
+        expect(res.byteAt(0)).toBe(0x01);
+        expect(res.byteAt(1)).toBe(0xff);
+        expect(res.byteAt(2)).toBe(0xbf);
+
+        res = bp2.or(bp1);
+        expect(bp1.constructor).toBe(BitPack);
+        expect(res.byteAt(0)).toBe(0x01);
+        expect(res.byteAt(1)).toBe(0xff);
+        expect(res.byteAt(2)).toBe(0xbf);
+    });
+
+    it('should return a BitPack of the specified length', () => {
+        var bp1 = new BitPack('\x00\x01\x02\x03');
+        var bp2 = new BitPack('\x00\x00');
+
+        expect(bp1.or(bp2).len()).toBe(2);
+    });
+
+    it('should return an empty BitPack if the second pack is empty', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(bp1.or(emptyPack).len()).toBe(0);
+    });
+
+    it('should throw a RangeError for ors beyond pack bounds', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var bp2 = new BitPack('\x00\x01\x02\x03');
+        var bp3 = new BitPack('\x00\x01');
+
+        var readPastDataBounds = () => {
+            bp1.or(bp2);
+        };
+        var readPastDataBoundsWithIndex = () => {
+            bp1.or(bp3, 2);
+        };
+
+        expect(readPastDataBounds).toThrowError(RangeError);
+        expect(readPastDataBoundsWithIndex).toThrowError(RangeError);
+    });
+});
+
 describe('BitPack.boolOr()', () => {
     it('should return true when either pack contains a 1 bit', () => {
         var bpAllZeros = new BitPack('\x00\x00\x00');
