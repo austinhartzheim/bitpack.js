@@ -25,7 +25,7 @@ BitPack.prototype.len = function() {
     return this.data.length;
 };
 
-BitPack.prototype.or = function(pack, index) {
+BitPack.prototype.boolOr = function(pack, index) {
     index = index | 0;
 
     // oring with an empty pack should always return true.
@@ -47,7 +47,7 @@ BitPack.prototype.or = function(pack, index) {
     return false;
 };
 
-BitPack.prototype.and = function(pack, index) {
+BitPack.prototype.boolAnd = function(pack, index) {
     index = index | 0;
 
     // anding with an empty pack should always return true.
