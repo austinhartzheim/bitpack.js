@@ -140,6 +140,55 @@ describe('BitPack.boolOr()', () => {
     });
 });
 
+describe('BitPack.and()', () => {
+    it('should return the and of the two bitpacks', () => {
+        var bp1 = new BitPack('\x00\xff\xab');
+        var bp2 = new BitPack('\xff\x8b\xb5');
+
+        var res = bp1.and(bp2);
+        expect(res.constructor).toBe(BitPack);
+        expect(res.byteAt(0)).toBe(0x00);
+        expect(res.byteAt(1)).toBe(0x8b);
+        expect(res.byteAt(2)).toBe(0xa1);
+
+        res = bp2.and(bp1);
+        expect(res.constructor).toBe(BitPack);
+        expect(res.byteAt(0)).toBe(0x00);
+        expect(res.byteAt(1)).toBe(0x8b);
+        expect(res.byteAt(2)).toBe(0xa1);
+    });
+
+    it('should return a BitPack of the specified length', () => {
+        var bp1 = new BitPack('\x00\x01\x03\x03');
+        var bp2 = new BitPack('\x05\x02');
+
+        expect(bp1.and(bp2).len()).toBe(2);
+    });
+
+    it('should return an empty BitPack if the second pack is empty', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var emptyPack = new BitPack();
+
+        expect(bp1.and(emptyPack).len()).toBe(0);
+    });
+
+    it('should throw a RangeError for ands beyond pack bounds', () => {
+        var bp1 = new BitPack('\x00\x01\x02');
+        var bp2 = new BitPack('\x00\x01\x02\x03');
+        var bp3 = new BitPack('\x00\x01');
+
+        var readPastDataBounds = () => {
+            bp1.and(bp2);
+        };
+        var readPastDataBoundsWithIndex = () => {
+            bp1.and(bp3, 2);
+        };
+
+        expect(readPastDataBounds).toThrowError(RangeError);
+        expect(readPastDataBoundsWithIndex).toThrowError(RangeError);
+    });
+});
+
 describe('BitPack.boolAnd()', () => {
     it('should return true with both packs are bitwise idential', () => {
         var bp1 = new BitPack('\x00\x01\x02');
