@@ -47,13 +47,13 @@ describe('BitPack.or()', () => {
         var bp2 = new BitPack('\x01\x00\xb5');
 
         var res = bp1.or(bp2);
-        expect(bp2.constructor).toBe(BitPack);
+        expect(res.constructor).toBe(BitPack);
         expect(res.byteAt(0)).toBe(0x01);
         expect(res.byteAt(1)).toBe(0xff);
         expect(res.byteAt(2)).toBe(0xbf);
 
         res = bp2.or(bp1);
-        expect(bp1.constructor).toBe(BitPack);
+        expect(res.constructor).toBe(BitPack);
         expect(res.byteAt(0)).toBe(0x01);
         expect(res.byteAt(1)).toBe(0xff);
         expect(res.byteAt(2)).toBe(0xbf);
