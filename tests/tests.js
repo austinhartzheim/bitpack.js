@@ -190,14 +190,6 @@ describe('BitPack.and()', () => {
 });
 
 describe('BitPack.boolAnd()', () => {
-    it('should return true with both packs are bitwise idential', () => {
-        var bp1 = new BitPack('\x00\x01\x02');
-        var bp2 = new BitPack('\x00\x01\x02');
-
-        expect(bp1.boolAnd(bp2)).toBe(true);
-        expect(bp2.boolAnd(bp1)).toBe(true);
-    });
-
     it('should return true when there is a common bit', () => {
         var bp1 = new BitPack('\x00\x00\x80');
         var bp2 = new BitPack('\x00\x01\x80');
