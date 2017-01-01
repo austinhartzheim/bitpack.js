@@ -214,21 +214,35 @@ describe('BitPack.boolAnd()', () => {
         expect(bp.boolAnd(emptyPack, 1)).toBe(true);
     });
 
-    it('should return false when the source is empty', () => {
+    it('should throw a RangeError when the source is empty', () => {
         var bp = new BitPack('\x00\x01\x02');
         var emptyPack = new BitPack();
 
-        expect(emptyPack.boolAnd(bp)).toBe(false);
-        expect(emptyPack.boolAnd(bp, 1)).toBe(false);
+        var readPastDataBounds = () => {
+            emptyPack.boolAnd(bp);
+        };
+        var readPastDataBoundsWithIndex = () => {
+            emptyPack.boolAnd(bp, 1);
+        };
+        
+        expect(readPastDataBounds).toThrowError(RangeError);
+        expect(readPastDataBoundsWithIndex).toThrowError(RangeError);
     });
 
-    it('should return false if an or reads past the data boundary', () => {
+    it('should throw a RangeError for checks beyond pack bounds', () => {
         var bp1 = new BitPack('\x00\x01\x02');
         var bp2 = new BitPack('\x00\x01\x02\x04');
         var bp3 = new BitPack('\\x01\x02\x03');
 
-        expect(bp1.boolAnd(bp2)).toBe(false);
-        expect(bp1.boolAnd(bp3, 1)).toBe(false);
+        var readPastDataBounds = () => {
+            bp1.boolAnd(bp2);
+        };
+        var readPastDataBoundsWithIndex = () => {
+            bp1.boolAnd(bp3, 1);
+        };
+
+        expect(readPastDataBounds).toThrowError(RangeError);
+        expect(readPastDataBoundsWithIndex).toThrowError(RangeError);
     });
 });
 

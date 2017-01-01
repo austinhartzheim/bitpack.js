@@ -91,9 +91,9 @@ BitPack.prototype.boolAnd = function(pack, index) {
         return true;
     }
 
-    // if this check reads past the end of our data, return false
+    // if this reads past the end of our data, throw a range error
     if (index + pack.len() > this.len()) {
-        return false;
+        throw new RangeError();
     }
     
     for (var i = 0; i < pack.len(); i++) {
