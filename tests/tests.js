@@ -232,7 +232,7 @@ describe('BitPack.boolAnd()', () => {
     it('should throw a RangeError for checks beyond pack bounds', () => {
         var bp1 = new BitPack('\x00\x01\x02');
         var bp2 = new BitPack('\x00\x01\x02\x04');
-        var bp3 = new BitPack('\\x01\x02\x03');
+        var bp3 = new BitPack('\x01\x02\x03');
 
         var readPastDataBounds = () => {
             bp1.boolAnd(bp2);
