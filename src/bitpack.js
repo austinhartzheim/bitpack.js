@@ -97,11 +97,11 @@ BitPack.prototype.boolAnd = function(pack, index) {
     }
     
     for (var i = 0; i < pack.len(); i++) {
-        if (this.byteAt(index + i) != pack.byteAt(i)) {
-            return false;
+        if (this.byteAt(index + i) & pack.byteAt(i)) {
+            return true;
         }
     }
-    return true;
+    return false;
 };
 
 BitPack.prototype.slice = function(start, end) {

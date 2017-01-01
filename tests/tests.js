@@ -198,18 +198,13 @@ describe('BitPack.boolAnd()', () => {
         expect(bp2.boolAnd(bp1)).toBe(true);
     });
 
-    it('should return false when any bit is different', () => {
-        var bp1 = new BitPack('\x00\x00');
-        var bp2 = new BitPack('\x00\x01');
+    it('should return true when there is a common bit', () => {
+        var bp1 = new BitPack('\x00\x00\x80');
+        var bp2 = new BitPack('\x00\x01\x80');
 
-        expect(bp1.boolAnd(bp2)).toBe(false);
-        expect(bp2.boolAnd(bp1)).toBe(false);
+        expect(bp1.boolAnd(bp2)).toBe(true);
+        expect(bp2.boolAnd(bp1)).toBe(true);
 
-        bp1 = new BitPack('\xff\xff\x00\xff');
-        bp2 = new BitPack('\xff\xff\xff\xff');
-
-        expect(bp1.boolAnd(bp2)).toBe(false);
-        expect(bp2.boolAnd(bp1)).toBe(false);
     });
 
     it('should return true when the packs match by index offset', () => {
