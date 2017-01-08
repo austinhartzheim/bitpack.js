@@ -1,5 +1,17 @@
-function BitPack(data) {
-    this.data = data || "";
+function BitPack(data, b64) {
+    if (b64 == undefined) {
+        b64 = true;
+    }
+
+    if (b64) {
+        try {
+            this.data = atob(data);
+        } catch (InvalidCharacterError) {
+            this.data = '';
+        }
+    } else {
+        this.data = data;
+    }
 }
 
 BitPack.prototype.byteAt = function(index) {
@@ -40,7 +52,7 @@ BitPack.prototype.or = function(pack, index) {
         );
     }
 
-    return new BitPack(resultData);
+    return new BitPack(resultData, false);
 };
 
 BitPack.prototype.boolOr = function(pack, index) {
@@ -80,7 +92,7 @@ BitPack.prototype.and = function(pack, index) {
         );
     }
 
-    return new BitPack(resultData);
+    return new BitPack(resultData, false);
 };
 
 BitPack.prototype.boolAnd = function(pack, index) {
@@ -105,5 +117,5 @@ BitPack.prototype.boolAnd = function(pack, index) {
 };
 
 BitPack.prototype.slice = function(start, end) {
-    return new BitPack(this.data.slice(start, end));
+    return new BitPack(this.data.slice(start, end), false);
 };
