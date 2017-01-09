@@ -15,9 +15,18 @@ function BitPack(data, b64) {
 }
 
 BitPack.prototype.byteAt = function(index) {
-    if (index >= this.len())
+    if (index >= this.len() || index < 0) {
         throw new RangeError();
+    }
     return this.data.charCodeAt(index) & 0xff;
+};
+
+BitPack.prototype.setByte = function(index, value) {
+    if (index >= this.len() || index < 0) {
+        throw new RangeError();
+    }
+    this.data = this.data.substr(0, index) + String.fromCharCode(value) +
+        this.data.substr(index + 1);    
 };
 
 BitPack.prototype.bitAt = function(index, bitIndex) {

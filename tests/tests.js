@@ -41,6 +41,32 @@ describe('BitPack.byteAt()', () => {
     });
 });
 
+describe('BitPack.setByte()', () => {
+    it('should update the data of an existing BitPack', () => {
+        var bp = new BitPack(btoa('\x00\x01'));
+
+        bp.setByte(0, 1);
+        bp.setByte(1, 2);
+
+        expect(bp.byteAt(0)).toBe(1);
+        expect(bp.byteAt(1)).toBe(2);
+    });
+
+    it('should throw an error when the index is past the data bounds', () => {
+        var bp = new BitPack(btoa('\x00\x01'));
+
+        var readPastDataBoundsPostitive = () => {
+            bp.setByte(2, 1);
+        };
+        var readPastDataBoundsNegative = () => {
+            bp.setByte(-1, 0);
+        };
+
+        expect(readPastDataBoundsPostitive).toThrowError(RangeError);
+        expect(readPastDataBoundsNegative).toThrowError(RangeError);
+    });
+});
+
 describe('BitPack.or()', () => {
     it('should return the or of the two bitpacks', () => {
         var bp1 = new BitPack(btoa('\x00\xff\xab'));
