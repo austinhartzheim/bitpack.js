@@ -42,6 +42,23 @@ BitPack.prototype.bitAt = function(index, bitIndex) {
     return false;
 };
 
+BitPack.prototype.setBit = function(index, bitIndex, value) {
+    if (value == undefined) {
+        value = bitIndex;
+        bitIndex = index % 8;
+        index = Math.floor(index / 8);
+    }
+
+    var byte = this.byteAt(index);
+    if (value) {
+        byte |= 0x80 >> bitIndex;
+    } else {
+        byte ^= 0x80 >> bitIndex;
+    }
+
+    this.setByte(index, byte);
+};
+
 BitPack.prototype.len = function() {
     return this.data.length;
 };

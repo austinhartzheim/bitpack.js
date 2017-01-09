@@ -301,6 +301,28 @@ describe('BitMask.bitAt()', () => {
     });
 });
 
+describe('BitMask.setBit()', () => {
+    it('should set a false bit to true when called with value=true', () => {
+        var bp = new BitPack(btoa('\x00\xff'));
+
+        bp.setBit(0, true);
+        expect(bp.bitAt(0)).toBe(true);
+
+        bp.setBit(8, false);
+        expect(bp.bitAt(8)).toBe(false);
+    });
+
+    it('should throw a RangeError if index is beyond the data range', () => {
+        var bp = new BitPack(btoa('\x00\xff'));
+
+        var writeBitPastDataRange = () => {
+            bp.setBit(16, true);
+        };
+
+        expect(writeBitPastDataRange).toThrowError(RangeError);
+    });
+});
+
 describe('BitMask.slice()', () => {
     it('should return a BitPack with the sliced data', () => {
         var bp = new BitPack(btoa('\x00\x01\x02\x03'));
